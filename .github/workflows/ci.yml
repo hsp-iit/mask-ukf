@@ -1,0 +1,89 @@
+name: C++ CI Workflow
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: '[${{ matrix.os }}@${{ matrix.build_type }}]'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build_type: [Release]
+        os: [ubuntu-18.04, ubuntu-20.04]
+
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Remove broken apt repos [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
+      run: for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
+
+    - name: Dependencies [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        sudo apt-get update
+        sudo apt-get install build-essential cmake cmake-curses-gui coinor-libipopt-dev freeglut3-dev git libace-dev libboost-filesystem-dev libboost-system-dev libboost-thread-dev libdc1394-22-dev libedit-dev libeigen3-dev libgsl0-dev libjpeg-dev liblua5.1-dev libode-dev libopencv-dev libsdl1.2-dev libtinyxml-dev libv4l-dev libxml2-dev lua5.1 portaudio19-dev qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings qml-module-qtmultimedia qml-module-qtquick-controls qml-module-qtquick-dialogs qml-module-qtquick-window2 qml-module-qtquick2 qtbase5-dev qtdeclarative5-dev qtmultimedia5-dev swig libmatio-dev
+
+        # eigen3
+        sudo apt-get install libeigen3-dev
+
+        # mlpack
+        sudo apt-get install libmlpack-dev mlpack-bin
+
+        # pcl
+        sudo apt-get install libpcl-dev
+
+    - name: Dependencies (from source) [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        # bayes-filters-lib
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/robotlogy/bayes-filters-lib
+        cd bayes-filters-lib
+        git checkout devel
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+        # nanoflann
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/jlblancoc/nanoflann
+        cd nanoflann
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+        # YCM
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/robotology/ycm
+        cd ycm
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+        # YARP
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/robotology/yarp
+        cd yarp
+        mkdir build
+        cd build
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Configure CMake [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+
+    - name: Build
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{matrix.build_type}}
