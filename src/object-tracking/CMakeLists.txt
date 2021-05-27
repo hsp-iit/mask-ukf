@@ -7,7 +7,7 @@
 #
 #===============================================================================
 
-set(EXE_TARGET_NAME object-tracking)
+set(EXE_TARGET_NAME mask-ukf-object-tracker)
 
 # Bayes Filters
 find_package(BayesFilters REQUIRED)
@@ -105,6 +105,6 @@ target_link_libraries(${EXE_TARGET_NAME}
 # target_compile_definitions(CameraLibrary PRIVATE ${PCL_DEFINITIONS})
 # target_compile_options(CameraLibrary PRIVATE ${PCL_COMPILE_OPTIONS})
 
-file(GLOB ${EXE_TARGET_NAME}_YCB_MODELS ${CMAKE_CURRENT_SOURCE_DIR}/models/*)
+# file(GLOB ${EXE_TARGET_NAME}_YCB_MODELS ${CMAKE_CURRENT_SOURCE_DIR}/models/*)
 
 install(TARGETS ${EXE_TARGET_NAME} DESTINATION bin)
