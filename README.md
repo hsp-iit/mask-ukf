@@ -1,4 +1,4 @@
-# MaskUKF
+MaskUKF
 ======================
 
 ![CI badge](https://github.com/robotology/mask-ukf/workflows/C++%20CI%20Workflow/badge.svg)
