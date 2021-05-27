@@ -40,21 +40,6 @@ jobs:
     - name: Dependencies (from source) [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
       run: |
-        # bayes-filters-lib
-        cd ${GITHUB_WORKSPACE}
-        git clone https://github.com/robotology/bayes-filters-lib
-        cd bayes-filters-lib
-        git checkout devel
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
-        cmake --build . --config ${{ matrix.build_type }} --target install
-
-        # nanoflann
-        cd ${GITHUB_WORKSPACE}
-        git clone https://github.com/jlblancoc/nanoflann
-        cd nanoflann
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
-        cmake --build . --config ${{ matrix.build_type }} --target install
-
         # YCM
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/ycm
@@ -68,6 +53,25 @@ jobs:
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/yarp
         cd yarp
+        mkdir build
+        cd build
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+        # bayes-filters-lib
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/robotology/bayes-filters-lib
+        cd bayes-filters-lib
+        git checkout devel
+        mkdir build
+        cd build
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+        # nanoflann
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/jlblancoc/nanoflann
+        cd nanoflann
         mkdir build
         cd build
         cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
