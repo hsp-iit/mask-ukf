@@ -1,4 +1,7 @@
 # MaskUKF
+======================
+
+![CI badge](https://github.com/robotology/mask-ukf/workflows/C++%20CI%20Workflow/badge.svg)
 
 This is the official repository of MaskUKF, an Instance Segmentation Aided Unscented Kalman Filter for 6D Object Pose and Velocity Tracking.
 
