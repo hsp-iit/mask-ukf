@@ -16,48 +16,28 @@ jobs:
         os: [ubuntu-18.04, ubuntu-20.04]
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
+
+    - uses: conda-incubator/setup-miniconda@v2
+      with:
+        mamba-version: "*"
+        channels: conda-forge, defaults
+        channel-priority: true
 
     - name: Remove broken apt repos [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
       run: for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
 
-    - name: Dependencies [Ubuntu]
-      if: contains(matrix.os, 'ubuntu')
+    - name: Dependencies [Shared]
+      shell: bash -l {0}
       run: |
-        sudo apt-get update
-        sudo apt-get install build-essential cmake cmake-curses-gui coinor-libipopt-dev freeglut3-dev git libace-dev libboost-filesystem-dev libboost-system-dev libboost-thread-dev libdc1394-22-dev libedit-dev libeigen3-dev libgsl0-dev libjpeg-dev liblua5.1-dev libode-dev libopencv-dev libsdl1.2-dev libtinyxml-dev libv4l-dev libxml2-dev lua5.1 portaudio19-dev qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings qml-module-qtmultimedia qml-module-qtquick-controls qml-module-qtquick-dialogs qml-module-qtquick-window2 qml-module-qtquick2 qtbase5-dev qtdeclarative5-dev qtmultimedia5-dev swig libmatio-dev
-
-        # eigen3
-        sudo apt-get install libeigen3-dev
-
-        # mlpack
-        sudo apt-get install libmlpack-dev mlpack-bin
-
-        # pcl
-        sudo apt-get install libpcl-dev
+        mamba install cmake compilers make pkg-config
+        mamba install -c robotology yarp eigen mlpack pcl opencv
 
     - name: Dependencies (from source) [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
+      shell: bash -l {0}
       run: |
-        # YCM
-        cd ${GITHUB_WORKSPACE}
-        git clone https://github.com/robotology/ycm
-        cd ycm
-        mkdir build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
-        cmake --build . --config ${{ matrix.build_type }} --target install
-
-        # YARP
-        cd ${GITHUB_WORKSPACE}
-        git clone https://github.com/robotology/yarp
-        cd yarp
-        mkdir build
-        cd build
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
-        cmake --build . --config ${{ matrix.build_type }} --target install
-
         # bayes-filters-lib
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/bayes-filters-lib
@@ -65,7 +45,7 @@ jobs:
         git checkout devel
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake -DCMAKE_PREFIX_PATH=${CONDA_PREFIX} -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} ..
         cmake --build . --config ${{ matrix.build_type }} --target install
 
         # nanoflann
@@ -74,20 +54,19 @@ jobs:
         cd nanoflann
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake -DCMAKE_PREFIX_PATH=${CONDA_PREFIX} -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} -DNANOFLANN_BUILD_EXAMPLES:BOOL=OFF -DNANOFLANN_BUILD_TESTS:BOOL=OFF ..
         cmake --build . --config ${{ matrix.build_type }} --target install
-
-
-    - name: Create Build Environment
-      run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
-      shell: bash
-      working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+      shell: bash -l {0}
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_PREFIX_PATH=${CONDA_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ..
 
     - name: Build
-      working-directory: ${{runner.workspace}}/build
-      shell: bash
-      run: cmake --build . --config ${{matrix.build_type}}
+      shell: bash -l {0}
+      run: |
+        cd build
+        cmake --build . --config ${{matrix.build_type}}
