@@ -20,32 +20,13 @@ using namespace yarp::os;
 
 YcbVideoCamera::YcbVideoCamera(const std::string& path, const std::size_t& width, const std::size_t& height, const std::string& config_context)
 {
-    // Load camera resolution and instrinsic parameters from configuration file
-    ResourceFinder rf;
-    rf.setVerbose(true);
-    rf.setDefaultContext(config_context);
-    rf.setDefaultConfigFile("ycbvideo_camera_config.ini");
-    rf.configure(0, nullptr);
-
-    ResourceFinder rf_camera = rf.findNestedResourceFinder(("camera_" + std::to_string(width) + "_" + std::to_string(height)).c_str());
-    bool ok =  rf_camera.check("width");
-    ok &= rf_camera.check("height");
-    ok &= rf_camera.check("fx");
-    ok &= rf_camera.check("fy");
-    ok &= rf_camera.check("cx");
-    ok &= rf_camera.check("cy");
-    if (!ok)
-    {
-        std::string err = log_ID_ + "::ctor. Error: cannot load Ycb Video camera parameters.";
-        throw(std::runtime_error(err));
-    }
-
-    parameters_.width = rf_camera.find("width").asDouble();
-    parameters_.height = rf_camera.find("height").asDouble();
-    parameters_.fx = rf_camera.find("fx").asDouble();
-    parameters_.fy = rf_camera.find("fy").asDouble();
-    parameters_.cx = rf_camera.find("cx").asDouble();
-    parameters_.cy = rf_camera.find("cy").asDouble();
+    // Camera parameters
+    parameters_.width = 320;
+    parameters_.height = 240;
+    parameters_.fx = 533.4;
+    parameters_.fy = 533.75;
+    parameters_.cx = 156.495;
+    parameters_.cy = 120.655;
     parameters_.initialized = true;
 
     // Log parameters
