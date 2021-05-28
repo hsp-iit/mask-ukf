@@ -7,4 +7,4 @@
 #
 #===============================================================================
 
-add_subdirectory(object-tracking)
+add_subdirectory(mask-ukf-object-tracker)
