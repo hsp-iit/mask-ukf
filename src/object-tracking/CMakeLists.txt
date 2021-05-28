@@ -19,7 +19,7 @@ find_package(Eigen3 REQUIRED)
 find_package(OpenCV REQUIRED)
 
 # PCL
-# find_package(PCL REQUIRED)
+find_package(PCL REQUIRED)
 
 # YARP
 find_package(YARP CONFIG REQUIRED
@@ -59,7 +59,7 @@ set(${EXE_TARGET_NAME}_HDR
 set(${EXE_TARGET_NAME}_SRC
     src/Camera.cpp
     src/Correction.cpp
-    # src/CorrectionICP.cpp
+    src/CorrectionICP.cpp
     src/DiscretizedKinematicModel.cpp
     src/InitGroundTruth.cpp
     src/MaskSegmentation.cpp
@@ -97,13 +97,10 @@ target_link_libraries(${EXE_TARGET_NAME}
                       ${OpenCV_LIBS}
 )
 
-# target_link_libraries(${EXE_TARGET_NAME} PRIVATE ${PCL_LIBRARIES})
-# target_include_directories(${EXE_TARGET_NAME} PRIVATE ${PCL_INCLUDE_DIRS})
-# target_compile_definitions(${EXE_TARGET_NAME} PRIVATE ${PCL_DEFINITIONS})
-# target_compile_options(${EXE_TARGET_NAME} PRIVATE ${PCL_COMPILE_OPTIONS})
-
-# target_compile_definitions(CameraLibrary PRIVATE ${PCL_DEFINITIONS})
-# target_compile_options(CameraLibrary PRIVATE ${PCL_COMPILE_OPTIONS})
+target_link_libraries(${EXE_TARGET_NAME} PRIVATE ${PCL_LIBRARIES})
+target_include_directories(${EXE_TARGET_NAME} PRIVATE ${PCL_INCLUDE_DIRS})
+target_compile_definitions(${EXE_TARGET_NAME} PRIVATE ${PCL_DEFINITIONS})
+target_compile_options(${EXE_TARGET_NAME} PRIVATE ${PCL_COMPILE_OPTIONS})
 
 # file(GLOB ${EXE_TARGET_NAME}_YCB_MODELS ${CMAKE_CURRENT_SOURCE_DIR}/models/*)
 
