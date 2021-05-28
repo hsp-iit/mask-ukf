@@ -11,7 +11,7 @@ ALG_NAME=$1
 SEG_TYPE=$2
 OBJ_NAME=$3
 OBJ_NAME_NO_ID=`echo $OBJ_NAME | cut -c5-`
-DATA=./datasets/dataset_nrt
+DATA=./datasets/ycb-video
 OUTPUT=./results/$ALG_NAME/nrt/${SEG_TYPE}/validation/${OBJ_NAME}
 
 ALGORITHM=""
