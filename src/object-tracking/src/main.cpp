@@ -7,7 +7,7 @@
 
 #include <Camera.h>
 #include <Correction.h>
-// #include <CorrectionICP.h>
+#include <CorrectionICP.h>
 #include <DiscretizedKinematicModel.h>
 #include <InitGroundTruth.h>
 #include <MaskSegmentation.h>
@@ -290,13 +290,13 @@ int main(int argc, char** argv)
             new Correction(std::move(measurement_model), state_size, ut_alpha, ut_beta, ut_kappa, measurement_sub_size)
         );
     }
-    // else
-    // {
-        // correction = std::unique_ptr<CorrectionICP>
-        // (
-        //     new CorrectionICP(std::move(measurement_model), object_point_cloud_path)
-        // );
-    // }
+    else
+    {
+        correction = std::unique_ptr<CorrectionICP>
+        (
+            new CorrectionICP(std::move(measurement_model), object_point_cloud_path)
+        );
+    }
 
     /**
      * Filter.
