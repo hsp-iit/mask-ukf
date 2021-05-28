@@ -100,7 +100,7 @@ int main(int argc, char** argv)
     /* Mesh parameters. */
     Bottle rf_object = rf.findGroup("OBJECT");
     const std::string object_name      = rf_object.check("object_name", Value("002_master_chef_can")).asString();
-    const std::string object_point_cloud_path = rf.findPath("models/" + object_name);
+    const std::string object_point_cloud_path = "./models/" + object_name;
     const std::string object_data_path        = rf_object.check("path", Value("null")).asString();
 
     /* Segmentation parameters. */
