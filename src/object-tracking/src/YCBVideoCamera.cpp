@@ -18,7 +18,7 @@ using namespace Eigen;
 using namespace yarp::os;
 
 
-YcbVideoCamera::YcbVideoCamera(const std::string& path, const std::size_t& width, const std::size_t& height, const std::string& config_context)
+YcbVideoCamera::YcbVideoCamera(const std::string& path)
 {
     // Camera parameters
     parameters_.width = 320;
@@ -28,15 +28,6 @@ YcbVideoCamera::YcbVideoCamera(const std::string& path, const std::size_t& width
     parameters_.cx = 156.495;
     parameters_.cy = 120.655;
     parameters_.initialized = true;
-
-    // Log parameters
-    std::cout << log_ID_ + "::ctor. Camera parameters." << std::endl;
-    std::cout << log_ID_ + "    - width: " << parameters_.width << std::endl;
-    std::cout << log_ID_ + "    - height: " << parameters_.height << std::endl;
-    std::cout << log_ID_ + "    - fx: " << parameters_.fx << std::endl;
-    std::cout << log_ID_ + "    - fy: " << parameters_.fy << std::endl;
-    std::cout << log_ID_ + "    - cx: " << parameters_.cx << std::endl;
-    std::cout << log_ID_ + "    - cy: " << parameters_.cy << std::endl;
 
     /* Compose root path. */
     std::string root = path;

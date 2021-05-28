@@ -17,7 +17,7 @@ class YcbVideoCamera : public Camera
 {
 public:
 
-    YcbVideoCamera(const std::string& path, const std::size_t& width, const std::size_t& height, const std::string& config_context);
+    YcbVideoCamera(const std::string& path);
 
     ~YcbVideoCamera();
 

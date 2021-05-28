@@ -68,8 +68,7 @@ int main(int argc, char** argv)
 
     /* Camera parameters. */
     Bottle rf_camera = rf.findGroup("CAMERA");
-    const std::string camera_name         = rf_camera.check("name", Value("iCubCamera")).asString();
-    const std::string camera_fallback_key = rf_camera.check("fallback_key", Value("icub_320_240")).asString();
+    const std::string camera_name         = rf_camera.check("name", Value("")).asString();
 
     /* Kinematic model. */
     Bottle rf_kinematic_model = rf.findGroup("KINEMATIC_MODEL");
@@ -132,7 +131,6 @@ int main(int argc, char** argv)
 
     std::cout << log_ID << "Camera:" << std::endl;
     std::cout << log_ID << "- name:"         << camera_name << std::endl;
-    std::cout << log_ID << "- fallback_key:" << camera_fallback_key << std::endl;
 
     std::cout << log_ID << "Kinematic model:" << std::endl;
     std::cout << log_ID << "- q_x:"             << eigen_to_string(kin_q_x) << std::endl;
@@ -178,7 +176,7 @@ int main(int argc, char** argv)
     {
         camera = std::unique_ptr<YcbVideoCamera>
         (
-            new YcbVideoCamera(object_data_path, 320, 240, "object-tracking")
+            new YcbVideoCamera(object_data_path)
         );
     }
     else
