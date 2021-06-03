@@ -8,3 +8,4 @@
 #===============================================================================
 
 add_subdirectory(mask-ukf-object-tracker)
+add_subdirectory(mask-ukf-evaluator)
