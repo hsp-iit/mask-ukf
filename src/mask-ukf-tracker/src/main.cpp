@@ -120,6 +120,12 @@ int main(int argc, char** argv)
     }
 
     /* Log parameters. */
+    auto eigen_to_string = [](const Ref<const VectorXd>& v)
+    {
+        std::stringstream ss;
+        ss << v.transpose();
+        return ss.str();
+    };
 
     std::cout << log_ID << "Algorithm:" << algorithm << std::endl;
 
@@ -364,12 +370,4 @@ VectorXd load_vector_double(Bottle &rf, const std::string key, const std::size_t
     }
 
     return vector;
-}
-
-
-std::string eigen_to_string(const Ref<const VectorXd>& v)
-{
-    std::stringstream ss;
-    ss << v.transpose();
-    return ss.str();
 }
