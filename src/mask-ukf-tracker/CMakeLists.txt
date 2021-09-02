@@ -7,7 +7,7 @@
 #
 #===============================================================================
 
-set(EXE_TARGET_NAME mask-ukf-object-tracker)
+set(EXE_TARGET_NAME mask-ukf-tracker)
 
 # Bayes Filters
 find_package(BayesFilters REQUIRED)

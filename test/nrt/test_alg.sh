@@ -29,7 +29,7 @@ do
     mkdir -p $OUTPUT/$video_id;
     rm -f $OUTPUT/$video_id/*.txt
 
-    ./build/bin/mask-ukf-object-tracker\
+    ./build/bin/mask-ukf-tracker\
             --from ./config/config_ycbvideonrt.ini\
             --algorithm $ALGORITHM\
             --POINT_CLOUD_FILTERING::outlier_rejection $USE_OURS_OUTLIER_REJECTION\
