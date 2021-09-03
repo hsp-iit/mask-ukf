@@ -12,10 +12,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <yarp/os/ResourceFinder.h>
-
 using namespace Eigen;
-using namespace yarp::os;
 
 
 YcbVideoCamera::YcbVideoCamera(const std::string& path)

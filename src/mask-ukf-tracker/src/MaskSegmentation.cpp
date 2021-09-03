@@ -10,14 +10,7 @@
 #include <fstream>
 #include <iostream>
 
-#include <yarp/cv/Cv.h>
-#include <yarp/os/Value.h>
-
-
 using namespace Eigen;
-using namespace yarp::cv;
-using namespace yarp::os;
-using namespace yarp::sig;
 
 
 MaskSegmentation::MaskSegmentation(const std::string& path, const std::string& mask_name, const std::size_t& depth_stride, const std::string& masks_set) :
