@@ -13,26 +13,20 @@ jobs:
     strategy:
       matrix:
         build_type: [Release]
-        os: [ubuntu-18.04, ubuntu-20.04]
+        os: [ubuntu-20.04]
 
     steps:
     - uses: actions/checkout@v2
-
-    - uses: conda-incubator/setup-miniconda@v2
-      with:
-        mamba-version: "*"
-        channels: conda-forge, defaults
-        channel-priority: true
 
     - name: Remove broken apt repos [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
       run: for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
 
-    - name: Dependencies [Shared]
+    - name: Dependencies [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
       shell: bash -l {0}
       run: |
-        mamba install cmake compilers make pkg-config
-        mamba install -c robotology yarp eigen mlpack pcl opencv
+        sudo apt install -y cmake libeigen3-dev libmlpack-dev libopencv-dev libpcl-dev libtclap-dev libconfig++-dev
 
     - name: Dependencies (from source) [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
@@ -45,7 +39,7 @@ jobs:
         git checkout devel
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${CONDA_PREFIX} -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} ..
+        cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
         cmake --build . --config ${{ matrix.build_type }} --target install
 
         # nanoflann
@@ -54,7 +48,7 @@ jobs:
         cd nanoflann
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${CONDA_PREFIX} -DCMAKE_INSTALL_PREFIX=${CONDA_PREFIX} -DNANOFLANN_BUILD_EXAMPLES:BOOL=OFF -DNANOFLANN_BUILD_TESTS:BOOL=OFF ..
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} -DNANOFLANN_BUILD_EXAMPLES:BOOL=OFF -DNANOFLANN_BUILD_TESTS:BOOL=OFF ..
         cmake --build . --config ${{ matrix.build_type }} --target install
 
     - name: Configure CMake [Ubuntu]
@@ -63,7 +57,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${CONDA_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ..
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ..
 
     - name: Build
       shell: bash -l {0}

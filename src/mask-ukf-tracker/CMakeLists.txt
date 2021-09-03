@@ -100,11 +100,7 @@ target_link_libraries(${EXE_TARGET_NAME}
                       ${ARMADILLO_LIBRARIES}
                       ${MLPACK_LIBRARIES}
                       ${OpenCV_LIBS}
+                      ${PCL_LIBRARIES}
 )
-
-target_link_libraries(${EXE_TARGET_NAME} PRIVATE ${PCL_LIBRARIES})
-target_include_directories(${EXE_TARGET_NAME} PRIVATE ${PCL_INCLUDE_DIRS})
-target_compile_definitions(${EXE_TARGET_NAME} PRIVATE ${PCL_DEFINITIONS})
-target_compile_options(${EXE_TARGET_NAME} PRIVATE ${PCL_COMPILE_OPTIONS})
 
 install(TARGETS ${EXE_TARGET_NAME} DESTINATION bin)
