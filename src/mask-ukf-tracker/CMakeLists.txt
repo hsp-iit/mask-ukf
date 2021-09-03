@@ -9,6 +9,8 @@
 
 set(EXE_TARGET_NAME mask-ukf-tracker)
 
+find_package(PkgConfig REQUIRED)
+
 # Bayes Filters
 find_package(BayesFilters REQUIRED)
 
@@ -21,12 +23,6 @@ find_package(OpenCV REQUIRED)
 # PCL
 find_package(PCL REQUIRED)
 
-# YARP
-find_package(YARP CONFIG REQUIRED
-             COMPONENTS
-             os
-)
-
 # armadillo
 find_package(Armadillo REQUIRED)
 
@@ -36,8 +32,15 @@ find_package(MLPACK REQUIRED)
 # nanoflann
 find_package(nanoflann QUIET)
 
+# libconfig
+pkg_check_modules(LIBCONFIG++ REQUIRED IMPORTED_TARGET libconfig++)
+
+# tclap
+pkg_check_modules(TCLAP REQUIRED tclap)
+
 set(${EXE_TARGET_NAME}_HDR
     include/Camera.h
+    include/ConfigParser.h
     include/Correction.h
     include/CorrectionICP.h
     include/DiscretizedKinematicModel.h
@@ -58,6 +61,7 @@ set(${EXE_TARGET_NAME}_HDR
 
 set(${EXE_TARGET_NAME}_SRC
     src/Camera.cpp
+    src/ConfigParser.cpp
     src/Correction.cpp
     src/CorrectionICP.cpp
     src/DiscretizedKinematicModel.cpp
@@ -84,13 +88,14 @@ target_include_directories(${EXE_TARGET_NAME}
                            ${ARMADILLO_INCLUDE_DIRS}
                            ${CMAKE_CURRENT_SOURCE_DIR}/include
                            ${MLPACK_INCLUDE_DIRS}
+                           ${TCLAP_INCLUDEDIR}
 )
 
 target_link_libraries(${EXE_TARGET_NAME}
                       PRIVATE
                       BayesFilters::BayesFilters
                       Eigen3::Eigen
-                      YARP::YARP_os
+                      PkgConfig::LIBCONFIG++
                       nanoflann::nanoflann
                       ${ARMADILLO_LIBRARIES}
                       ${MLPACK_LIBRARIES}
@@ -101,7 +106,5 @@ target_link_libraries(${EXE_TARGET_NAME} PRIVATE ${PCL_LIBRARIES})
 target_include_directories(${EXE_TARGET_NAME} PRIVATE ${PCL_INCLUDE_DIRS})
 target_compile_definitions(${EXE_TARGET_NAME} PRIVATE ${PCL_DEFINITIONS})
 target_compile_options(${EXE_TARGET_NAME} PRIVATE ${PCL_COMPILE_OPTIONS})
-
-# file(GLOB ${EXE_TARGET_NAME}_YCB_MODELS ${CMAKE_CURRENT_SOURCE_DIR}/models/*)
 
 install(TARGETS ${EXE_TARGET_NAME} DESTINATION bin)

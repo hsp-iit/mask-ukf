@@ -30,14 +30,14 @@ do
     rm -f $OUTPUT/$video_id/*.txt
 
     ./build/bin/mask-ukf-tracker\
-            --from ./config/config_ycbvideonrt.ini\
+            --from ./config/config.cfg\
             --algorithm $ALGORITHM\
-            --POINT_CLOUD_FILTERING::outlier_rejection $USE_OURS_OUTLIER_REJECTION\
-            --SEGMENTATION::masks_set $SEG_TYPE\
-            --OBJECT::object_name $OBJ_NAME\
-            --OBJECT::path $DATA/$video_id\
-            --LOG::enable_log true\
-            --LOG::absolute_log_path $OUTPUT/$video_id\
+            --point_cloud_filtering::outlier_rejection $USE_OURS_OUTLIER_REJECTION\
+            --segmentation::masks_set $SEG_TYPE\
+            --object::object_name $OBJ_NAME\
+            --object::path $DATA/$video_id\
+            --log::enable_log true\
+            --log::absolute_log_path $OUTPUT/$video_id\
             --autostart true;
     cp $DATA/$video_id/gt_$OBJ_NAME_NO_ID/data.log $OUTPUT/$video_id/object-tracking_ground_truth.txt;
 done

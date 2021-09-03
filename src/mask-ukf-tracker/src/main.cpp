@@ -6,6 +6,7 @@
  */
 
 #include <Camera.h>
+#include <ConfigParser.h>
 #include <Correction.h>
 #include <CorrectionICP.h>
 #include <DiscretizedKinematicModel.h>
@@ -29,90 +30,67 @@
 #include <string>
 #include <sstream>
 
-#include <yarp/os/Bottle.h>
-#include <yarp/os/ResourceFinder.h>
-
 using namespace bfl;
-using namespace yarp::os;
 using namespace Eigen;
-
-
-VectorXd load_vector_double(Bottle &rf, const std::string key, const std::size_t size);
-
-
-std::string eigen_to_string(const Ref<const VectorXd>& v);
 
 
 int main(int argc, char** argv)
 {
-    const std::string log_ID = "[Main]";
+    const std::string log_ID = "[Main] ";
     std::cout << log_ID << "Configuring and starting module..." << std::endl;
 
-    ResourceFinder rf;
-    rf.setVerbose();
-    rf.setDefaultContext("object-tracking");
-    rf.configure(argc, argv);
+    ConfigParser conf(argc, argv);
 
     /* Get algorithm name. */
-    const std::string algorithm = rf.check("algorithm", Value("UKF")).asString();
+    std::string algorithm; conf("algorithm", algorithm);
 
     /* Get autostart flag. */
-    const bool autostart = rf.check("autostart", Value(false)).asBool();
+    bool autostart; conf("autostart", autostart);
 
     /* Get initial conditions. */
-    Bottle rf_initial_conditions = rf.findGroup("INITIAL_CONDITION");
-    VectorXd cov_x_0             = load_vector_double(rf_initial_conditions, "cov_x_0",       3);
-    VectorXd cov_v_0             = load_vector_double(rf_initial_conditions, "cov_v_0",       3);
-    VectorXd cov_eul_0           = load_vector_double(rf_initial_conditions, "cov_eul_0",     3);
-    VectorXd cov_eul_dot_0       = load_vector_double(rf_initial_conditions, "cov_eul_dot_0", 3);
+    VectorXd cov_x_0; conf("initial_condition::cov_x_0", cov_x_0);
+    VectorXd cov_v_0; conf("initial_condition::cov_v_0", cov_v_0);
+    VectorXd cov_eul_0; conf("initial_condition::cov_eul_0", cov_eul_0);
+    VectorXd cov_eul_dot_0; conf("initial_condition::cov_eul_dot_0", cov_eul_dot_0);
 
     /* Camera parameters. */
-    Bottle rf_camera = rf.findGroup("CAMERA");
-    const std::string camera_name         = rf_camera.check("name", Value("")).asString();
+    std::string camera_name; conf("camera::name", camera_name);
 
     /* Kinematic model. */
-    Bottle rf_kinematic_model = rf.findGroup("KINEMATIC_MODEL");
-    VectorXd kin_q_x             = load_vector_double(rf_kinematic_model, "q_x", 3);
-    VectorXd kin_q_eul           = load_vector_double(rf_kinematic_model, "q_eul", 3);
-    const double kin_rate        = rf_kinematic_model.check("rate", Value(30.0)).asDouble();
-    const bool kin_est_period    = rf_kinematic_model.check("estimate_period", Value(true)).asBool();
+    VectorXd kin_q_x; conf("kinematic_model::q_x", kin_q_x);
+    VectorXd kin_q_eul; conf("kinematic_model::q_eul", kin_q_eul);
+    double kin_rate; conf("kinematic_model::rate", kin_rate);
+    bool kin_est_period; conf("kinematic_model::estimate_period", kin_est_period);
 
     /* Measurement model. */
-    Bottle rf_measurement_model = rf.findGroup("MEASUREMENT_MODEL");
-    VectorXd visual_covariance           = load_vector_double(rf_measurement_model, "visual_covariance", 3);
-    MatrixXd visual_covariance_diagonal  = visual_covariance.asDiagonal();
+    VectorXd visual_covariance; conf("measurement_model::visual_covariance", visual_covariance);
+    MatrixXd visual_covariance_diagonal = visual_covariance.asDiagonal();
 
     /* Unscented transform. */
-    Bottle rf_unscented_transform = rf.findGroup("UNSCENTED_TRANSFORM");
-    const double ut_alpha = rf_unscented_transform.check("alpha", Value("1.0")).asDouble();
-    const double ut_beta  = rf_unscented_transform.check("beta", Value("2.0")).asDouble();
-    const double ut_kappa = rf_unscented_transform.check("kappa", Value("0.0")).asDouble();
+    double ut_alpha; conf("unscented_transform::alpha", ut_alpha);
+    double ut_beta; conf("unscented_transform::beta", ut_beta);
+    double ut_kappa; conf("unscented_transform::kappa", ut_kappa);
 
     /* Point cloud filtering. */
-    Bottle rf_point_cloud_filtering = rf.findGroup("POINT_CLOUD_FILTERING");
-    const bool pc_outlier_rejection = rf_point_cloud_filtering.check("outlier_rejection", Value(false)).asBool();
+    bool pc_outlier_rejection; conf("point_cloud_filtering::outlier_rejection", pc_outlier_rejection);
 
     /* Depth. */
-    Bottle rf_depth = rf.findGroup("DEPTH");
-    const std::string depth_fetch_mode = rf_depth.check("fetch_mode", Value("new_image")).toString();
-    const std::size_t depth_stride     = rf_depth.check("stride", Value(1)).asInt();
+    std::string depth_fetch_mode; conf("depth::fetch_mode", depth_fetch_mode);
+    int depth_stride; conf("depth::stride", depth_stride);
 
     /* Mesh parameters. */
-    Bottle rf_object = rf.findGroup("OBJECT");
-    const std::string object_name      = rf_object.check("object_name", Value("002_master_chef_can")).asString();
-    const std::string object_point_cloud_path = "./models/" + object_name;
-    const std::string object_data_path        = rf_object.check("path", Value("null")).asString();
+    std::string object_name; conf("object::object_name", object_name);
+    std::string object_point_cloud_path = "./models/" + object_name;
+    std::string object_data_path; conf("object::path", object_data_path);
 
     /* Segmentation parameters. */
-    Bottle rf_segmentation    = rf.findGroup("SEGMENTATION");
-    const std::string segmentation_set  = rf_segmentation.check("masks_set", Value("gt")).asString();
-    const bool segmentation_enforce_fps = rf_segmentation.check("enforce_fps", Value(false)).asBool();
-    const double segmentation_fps = rf_segmentation.check("fps", Value(5.0)).asDouble();
+    std::string segmentation_set; conf("segmentation::masks_set", segmentation_set);
+    bool segmentation_enforce_fps; conf("segmentation::enforce_fps", segmentation_enforce_fps);
+    double segmentation_fps; conf("segmentation::fps", segmentation_fps);
 
     /* Logging parameters. */
-    Bottle rf_logging = rf.findGroup("LOG");
-    bool enable_log = rf_logging.check("enable_log", Value(false)).asBool();
-    const std::string log_path = rf_logging.check("absolute_log_path", Value("")).asString();
+    bool enable_log; conf("log::enable_log", enable_log);
+    std::string log_path; conf("log::absolute_log_path", log_path);
     if (enable_log && log_path == "")
     {
         std::cout << "Invalid log path. Disabling log..." << std::endl;
@@ -136,43 +114,43 @@ int main(int argc, char** argv)
     std::cout << log_ID << "- cov_eul_dot_0: "    << eigen_to_string(cov_eul_dot_0) << std::endl;
 
     std::cout << log_ID << "Camera:" << std::endl;
-    std::cout << log_ID << "- name:"         << camera_name << std::endl;
+    std::cout << log_ID << "- name: "         << camera_name << std::endl;
 
     std::cout << log_ID << "Kinematic model:" << std::endl;
-    std::cout << log_ID << "- q_x:"             << eigen_to_string(kin_q_x) << std::endl;
-    std::cout << log_ID << "- q_eul:"           << eigen_to_string(kin_q_eul) << std::endl;
-    std::cout << log_ID << "- rate:"            << kin_rate << std::endl;
-    std::cout << log_ID << "- estimate_period:" << kin_est_period << std::endl;
+    std::cout << log_ID << "- q_x: "             << eigen_to_string(kin_q_x) << std::endl;
+    std::cout << log_ID << "- q_eul: "           << eigen_to_string(kin_q_eul) << std::endl;
+    std::cout << log_ID << "- rate: "            << kin_rate << std::endl;
+    std::cout << log_ID << "- estimate_period: " << kin_est_period << std::endl;
 
     std::cout << log_ID << "Measurement model:" << std::endl;
-    std::cout << log_ID << "- visual_covariance:" << eigen_to_string(visual_covariance) << std::endl;
+    std::cout << log_ID << "- visual_covariance: " << eigen_to_string(visual_covariance) << std::endl;
 
     std::cout << log_ID << "Unscented transform:" << std::endl;
-    std::cout << log_ID << "- alpha:" << ut_alpha << std::endl;
-    std::cout << log_ID << "- beta:"  << ut_beta << std::endl;
-    std::cout << log_ID << "- kappa:" << ut_kappa << std::endl;
+    std::cout << log_ID << "- alpha: " << ut_alpha << std::endl;
+    std::cout << log_ID << "- beta: "  << ut_beta << std::endl;
+    std::cout << log_ID << "- kappa: " << ut_kappa << std::endl;
 
     std::cout << log_ID << "Point cloud filtering:" << std::endl;
-    std::cout << log_ID << "- outlier_rejection:" << pc_outlier_rejection << std::endl;
+    std::cout << log_ID << "- outlier_rejection: " << pc_outlier_rejection << std::endl;
 
     std::cout << log_ID << "Depth:" << std::endl;
-    std::cout << log_ID << "- fetch_mode:" << depth_fetch_mode << std::endl;
-    std::cout << log_ID << "- stride:" << depth_stride << std::endl;
+    std::cout << log_ID << "- fetch_mode: " << depth_fetch_mode << std::endl;
+    std::cout << log_ID << "- stride: " << depth_stride << std::endl;
 
     std::cout << log_ID << "Object:" << std::endl;
-    std::cout << log_ID << "- object_name:"         << object_name << std::endl;
-    std::cout << log_ID << "- object_data_path:"    << object_data_path << std::endl;
-    std::cout << log_ID << "- point cloud path is:" << object_point_cloud_path << std::endl;
+    std::cout << log_ID << "- object_name: "         << object_name << std::endl;
+    std::cout << log_ID << "- object_data_path: "    << object_data_path << std::endl;
+    std::cout << log_ID << "- point cloud path is: " << object_point_cloud_path << std::endl;
 
     std::cout << log_ID << "Segmentation:" << std::endl;
-    std::cout << log_ID << "- masks_set:" << segmentation_set << std::endl;
-    std::cout << log_ID << "- enforce_fps:" << segmentation_enforce_fps << std::endl;
+    std::cout << log_ID << "- masks_set: " << segmentation_set << std::endl;
+    std::cout << log_ID << "- enforce_fps: " << segmentation_enforce_fps << std::endl;
     if (segmentation_enforce_fps)
-        std::cout << log_ID << "- fps:" << segmentation_fps << std::endl;
+        std::cout << log_ID << "- fps: " << segmentation_fps << std::endl;
 
     std::cout << log_ID << "Logging:" << std::endl;
-    std::cout << log_ID << "- enable_log:"        << enable_log << std::endl;
-    std::cout << log_ID << "- absolute_log_path:" << log_path << std::endl;
+    std::cout << log_ID << "- enable_log: "        << enable_log << std::endl;
+    std::cout << log_ID << "- absolute_log_path: " << log_path << std::endl;
 
     /**
      * Initialize camera
@@ -333,41 +311,4 @@ int main(int argc, char** argv)
     std::cout << log_ID << "Application closed succesfully.";
 
     return EXIT_SUCCESS;
-}
-
-
-VectorXd load_vector_double(Bottle &rf, const std::string key, const std::size_t size)
-{
-    bool ok = true;
-
-    if (rf.find(key).isNull())
-        ok = false;
-
-    Bottle* b = rf.find(key).asList();
-    if (b == nullptr)
-        ok = false;
-
-    if (b->size() != size)
-        ok = false;
-
-    if (!ok)
-    {
-        std::cerr << "[Main]" << "Unable to load vector" << key << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-
-    VectorXd vector(size);
-    for (std::size_t i = 0; i < b->size(); i++)
-    {
-        Value item_v = b->get(i);
-        if (item_v.isNull())
-            return VectorXd(0);
-
-        if (!item_v.isDouble())
-            return VectorXd(0);
-
-        vector(i) = item_v.asDouble();
-    }
-
-    return vector;
 }
