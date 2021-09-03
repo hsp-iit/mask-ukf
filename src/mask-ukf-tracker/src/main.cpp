@@ -105,7 +105,7 @@ int main(int argc, char** argv)
         return ss.str();
     };
 
-    std::cout << log_ID << "Algorithm:" << algorithm << std::endl;
+    std::cout << log_ID << "Algorithm: " << algorithm << std::endl;
 
     std::cout << log_ID << "Initial conditions:" << std::endl;
     std::cout << log_ID << "- cov_x_0: "          << eigen_to_string(cov_x_0) << std::endl;
@@ -308,7 +308,7 @@ int main(int argc, char** argv)
     if (!filter->wait())
         return EXIT_FAILURE;
 
-    std::cout << log_ID << "Application closed succesfully.";
+    std::cout << log_ID << "Application closed succesfully." << std::endl;
 
     return EXIT_SUCCESS;
 }
