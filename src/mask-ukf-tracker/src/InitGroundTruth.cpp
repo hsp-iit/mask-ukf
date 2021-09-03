@@ -83,23 +83,6 @@ Eigen::MatrixXd InitGroundTruth::getInitialCovariance()
 }
 
 
-void InitGroundTruth::step()
-{
-    index_++;
-    initial_pose_ = VectorXd::Zero(12);
-    initial_pose_.head<3>() = data_.col(index_).segment<3>(2 + data_shift_);
-    AngleAxisd angle_axis(data_.col(index_)(8 + data_shift_), data_.col(index_).segment<3>(5 + data_shift_));
-    initial_pose_.tail<3>() = angle_axis.toRotationMatrix().eulerAngles(2, 1, 0);
-
-    initial_pose_.head<3>()(0) += 0.05;
-    initial_pose_.head<3>()(1) += 0.05;
-    initial_pose_.head<3>()(2) += 0.05;
-    initial_pose_.tail<3>()(0) += 10.0 * M_PI / 180;
-    initial_pose_.tail<3>()(1) += 10.0 * M_PI / 180;
-    initial_pose_.tail<3>()(2) += 10.0 * M_PI / 180;
-}
-
-
 std::pair<bool, MatrixXd> InitGroundTruth::readStateFromFile(const std::string& filename, const std::size_t num_fields)
 {
     MatrixXd data;

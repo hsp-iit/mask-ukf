@@ -22,8 +22,6 @@ public:
 
     Eigen::MatrixXd getInitialCovariance();
 
-    void step();
-
 protected:
     std::pair<bool, Eigen::MatrixXd> readStateFromFile(const std::string& filename, const std::size_t num_fields);
 
