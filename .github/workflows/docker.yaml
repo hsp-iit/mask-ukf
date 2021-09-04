@@ -14,7 +14,7 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-focal
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
     - name: Require tag latest
