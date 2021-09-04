@@ -21,7 +21,7 @@ YcbVideoCamera::YcbVideoCamera(const std::string& path)
     parameters_.width = 320;
     parameters_.height = 240;
     parameters_.fx = 533.4;
-    parameters_.fy = 533.75;
+    parameters_.fy = 535.75;
     parameters_.cx = 156.495;
     parameters_.cy = 120.655;
     parameters_.initialized = true;
