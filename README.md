@@ -60,7 +60,7 @@ We support running the experiments via the provided Docker image.
     ```
     where `<mask_set>` can be `mrcnn` (Mask R-CNN) or `posecnn` (PoseCNN), `<metric>` can be `add_s` (ADD-S) or `rmse` (RMSE) and `<algorithm>` can be empty (for MaskUKF), `icp` (ICP) or `densefusion` (DenseFusion).
 
-If you want to install the repository locally, please refer to the recipe contained in the [**`Dockerfile`**](./dockerfiles/Dockerfile). Please be aware that the results might differ if unsupported versions of the dependencies are used.
+If you want to install the repository manually, please refer to the recipe contained in the [**`Dockerfile`**](./dockerfiles/Dockerfile). Please be aware that the results might differ if unsupported versions of the dependencies are used.
 
 ## Citing MaskUKF
 
