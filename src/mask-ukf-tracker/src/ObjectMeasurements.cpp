@@ -80,7 +80,7 @@ bool ObjectMeasurements::freeze(const Data& data)
         if ((point_cloud.cols() == 0) || (ratio < 20.0))
         {
             // If too few measurements than expected, or no measurements at all,
-            // use virtual measurements sampled on the last belief as described in III.F
+            // use virtual measurements sampled on the last belief as described in 3.6
 
             Transform<double, 3, Affine> pose;
             pose = Translation<double, 3>(last_belief.mean().head<3>());
@@ -91,7 +91,7 @@ bool ObjectMeasurements::freeze(const Data& data)
         }
         else if (outlier_rejection_)
         {
-            // If using real measurements, perform outlier rejection as described in III.D
+            // If using real measurements, perform outlier rejection as described in 3.4
 
             // Temporary storage
             MatrixXd point_cloud_tmp;
