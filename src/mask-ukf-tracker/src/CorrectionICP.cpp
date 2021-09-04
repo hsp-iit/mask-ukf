@@ -38,6 +38,8 @@ CorrectionICP::~CorrectionICP()
 
 void CorrectionICP::correctStep(const bfl::GaussianMixture& pred_state, bfl::GaussianMixture& corr_state)
 {
+    pcl::console::setVerbosityLevel(pcl::console::L_ALWAYS);
+
     /* Get the current measurement if available. */
     bool valid_measurement;
     Data measurement;
