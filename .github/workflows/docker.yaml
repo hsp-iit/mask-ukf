@@ -1,22 +1,12 @@
 name: Publish Docker Image
 
-on:
-  workflow_dispatch:
-    inputs:
-      add_tag_latest:
-        description: 'Add tag latest to the docker image'
-        required: true
-        default: 'yes'
+on: [workflow_dispatch]
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
-    - name: Require tag latest
-      id: add_tag_latest
-      if: ${{ github.event.inputs.add_tag_latest == 'yes' }}
-      run: |
-        echo "::set-output name=tag::, latest"
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@main
       with:
@@ -25,4 +15,3 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         workdir: dockerfiles
         registry: ghcr.io
-        tags: "${{ steps.add_tag_latest.outputs.tag }}"
