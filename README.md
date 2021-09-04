@@ -43,9 +43,9 @@ We support running the experiments via the provided Docker image.
     ```
 1. Download and unzip the accompanying data [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5419201.svg)](https://doi.org/10.5281/zenodo.5419201):
     ```console
-      cd /home/user/mask-ukf
-      wget https://zenodo.org/record/5419201/files/data.zip?download=1 -O data.zip
-      unzip data.zip
+    cd /home/user/mask-ukf
+    wget https://zenodo.org/record/5419201/files/data.zip?download=1 -O data.zip
+    unzip data.zip
     ```
 1. Run the experiments (optional):
     ```console
