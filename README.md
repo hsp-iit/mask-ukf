@@ -64,7 +64,7 @@ If you want to install the repository locally, please refer to the recipe contai
 
 ## Citing MaskUKF
 
-If you find the MaskUKF code useful, please consider citing:
+If you find the MaskUKF code useful, please consider citing the associated publication:
 
 ```bibtex
 @ARTICLE{10.3389/frobt.2021.594583,
@@ -79,6 +79,9 @@ DOI={10.3389/frobt.2021.594583},
 ISSN={2296-9144}
 }
 ```
+
+and/or the repository itself by pressing on the `Cite this respository` button in the **About** section.
+
 
 ## Maintainer
 
