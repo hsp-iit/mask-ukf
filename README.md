@@ -19,13 +19,34 @@
   <a href="https://www.youtube.com/watch?v=UZ1CGojdxrA"><b>Video</b></a>
 </div>
 
+[![DOI](https://zenodo.org/badge/.svg)](https://zenodo.org/badge/latestdoi/)
 ![CI badge](https://github.com/robotology/mask-ukf/workflows/C++%20CI%20Workflow/badge.svg)
 
-### Installation
+## Reproducing the experiments
 
-_Our software implementation is in the process of being released._
+We support running the experiments via the provided Docker image.
 
-### Citing MaskUKF
+1. Pull the docker image:
+    ```console
+    docker pull ghcr.io/robotology/mask-ukf:latest
+    ```
+1. Launch the container:
+    ```console
+    docker run -it --rm --user user ghcr.io/robotology/mask-ukf:latest
+    ```
+1. Run the experiments:
+    ```console
+    bash test/test_all.sh
+    ```
+1. Run the evaluation:
+    ```console
+    bash evaluation/evaluate_<mask_set>_<metric>_<algorithm>.sh
+    ```
+    where `<mask_set>` can be `mrcnn` (Mask R-CNN) or `posecnn` (PoseCNN), `<metric>` can be `add_s` (ADD-S) or `rmse` (RMSE) and `<algorithm>` can be empty (for MaskUKF), `icp` (ICP) or `densefusion` (DenseFusion).
+
+If you want to install the repository locally, please refer to the recipe contained in the [**`Dockerfile`**](./dockerfiles/Dockerfile). Please be aware that the results might differ if unsupported versions of the dependencies are used.
+
+## Citing MaskUKF
 
 If you find the MaskUKF code useful, please consider citing:
 
