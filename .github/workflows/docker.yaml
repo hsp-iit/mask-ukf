@@ -1,0 +1,36 @@
+name: Publish Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      add_tag_latest:
+        description: 'Add tag latest to the docker image'
+        required: true
+        default: 'yes'
+      build_type:
+        description: 'Build Type'
+        required: true
+        default: 'Release'
+
+jobs:
+  publish:
+    runs-on: ubuntu-focal
+    steps:
+    - uses: actions/checkout@main
+    - name: Require tag latest
+      id: add_tag_latest
+      if: ${{ github.event.inputs.add_tag_latest == 'yes' }}
+      run: |
+        echo "::set-output name=tag::, latest"
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@main
+      env:
+        BUILD_TYPE: ${{ github.event.inputs.build_type }}
+      with:
+        name: robotology/mask-ukf
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        workdir: dockerfiles
+        buildargs: BUILD_TYPE
+        registry: ghcr.io
+        tags: "${{ github.event.inputs.superbuild_release }}${{ steps.add_tag_latest.outputs.tag }}"
