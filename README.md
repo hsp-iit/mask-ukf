@@ -14,7 +14,6 @@
 </div>
 
 <div align="center">
-  <a href="#installation"><b>Installation</b></a> |
   <a href="https://www.frontiersin.org/articles/10.3389/frobt.2021.594583/full"><b>Paper</b></a> |
   <a href="https://www.youtube.com/watch?v=UZ1CGojdxrA"><b>Video</b></a>
 </div>
