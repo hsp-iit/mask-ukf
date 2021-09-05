@@ -5,9 +5,9 @@
 <p align="center"><img src="https://github.com/robotology/mask-ukf/blob/master/assets/picture.png" alt=""/></p>
 
 
-<h3 align="center">
+<h4 align="center">
   An Instance Segmentation Aided Unscented Kalman Filter for 6D Object Pose and Velocity Tracking
-</h3>
+</h4>
 
 <div align="center">
   Frontiers in Robotics and AI
@@ -31,7 +31,7 @@ We support running the experiments via the provided Docker image.
     ```
 1. Launch the container:
     ```console
-    docker run -it --rm --user user ghcr.io/robotology/mask-ukf:latest
+    docker run -it --rm --user user --env="DISPLAY" --net=host ghcr.io/robotology/mask-ukf:latest
     ```
 1. Clone and build the project:
     ```console
@@ -41,11 +41,11 @@ We support running the experiments via the provided Docker image.
     cmake ../
     make
     ```
-1. Download and unzip the accompanying data [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5419201.svg)](https://doi.org/10.5281/zenodo.5419201):
+1. Download and unzip the accompanying data [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5419201.svg)](https://doi.org/10.5281/zenodo.5419201) and the YCB-Video model set:
     ```console
     cd /home/user/mask-ukf
-    wget https://zenodo.org/record/5419201/files/data.zip?download=1 -O data.zip
-    unzip data.zip
+    bash misc/download_accompanying_data.sh
+    bash misc/download_ycb_models.sh
     ```
 1. Run the experiments (optional):
     ```console
@@ -58,9 +58,17 @@ We support running the experiments via the provided Docker image.
     cd /home/user/mask-ukf
     bash evaluation/evaluate_<mask_set>_<metric>_<algorithm>.sh
     ```
-    where `<mask_set>` can be `mrcnn` (Mask R-CNN) or `posecnn` (PoseCNN), `<metric>` can be `add_s` (ADD-S) or `rmse` (RMSE) and `<algorithm>` can be empty (for MaskUKF), `icp` (ICP) or `densefusion` (DenseFusion).
+    > `<mask_set>` can be `mrcnn` (Mask R-CNN) or `posecnn` (PoseCNN), `<metric>` can be `add_s` (ADD-S) or `rmse` (RMSE) and `<algorithm>` can be empty (MaskUKF), `icp` (ICP) or `densefusion` (DenseFusion).
+1. Visualize the results:
+    ```console
+    cd /home/user/mask-ukf
+    python3 evaluation/renderer/renderer.py --algorithm <algorithm> --mask_set <mask_set> --object <object_name> --video_id <video_id>
+    ```
+    > `<algorithm>` can be `mask-ukf` (MaskUKF), `icp` (ICP) or `dense_fusion` (DenseFusion), ``<mask_set>`` is as above, `<object_name>` is e.g. `002_master_chef_can` and `<video_id>` is the YCB-Video video id, e.g. `0048`.
 
-If you want to install the repository manually, please refer to the recipe contained in the [**`Dockerfile`**](./dockerfiles/Dockerfile). Please be aware that the results might differ if unsupported versions of the dependencies are used.
+> In order to run the visualizer it could be required to temporarily execute `xhost +` in a console outside of Docker in order to allow the container accessing the X server facilities. The command can be run even **after** the container has been already launched.
+
+> If you want to install the repository manually, please refer to the recipe contained in the [**`Dockerfile`**](./dockerfiles/Dockerfile). Please be aware that the results might differ if unsupported versions of the dependencies are used.
 
 ## Citing MaskUKF
 
