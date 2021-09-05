@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 
 # Install essentials
-RUN apt install -y build-essential cmake cmake-curses-gui emacs-nox git htop iputils-ping locales nano vim wget
+RUN apt install -y build-essential cmake cmake-curses-gui emacs-nox git htop iputils-ping locales nano python3 python3-pip vim wget
 
 # Set the locale
 RUN locale-gen en_US.UTF-8
@@ -38,6 +38,9 @@ RUN useradd -l -G sudo -md /home/user -s /bin/bash -p user user
 
 # Switch to user
 USER user
+
+# Install python dependencies
+RUN pip3 install pyquaternion pyrender opencv-python
 
 # Launch bash from /home/user
 WORKDIR /home/user
