@@ -18,7 +18,7 @@
   <a href="https://www.youtube.com/watch?v=UZ1CGojdxrA"><b>Video</b></a>
 </div>
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5448472.svg)](https://doi.org/10.5281/zenodo.5448472)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5457407.svg)](https://doi.org/10.5281/zenodo.5457407)
 ![CI badge](https://github.com/robotology/mask-ukf/workflows/C++%20CI%20Workflow/badge.svg)
 
 ## Reproducing the experiments
