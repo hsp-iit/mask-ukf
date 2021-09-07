@@ -21,6 +21,5 @@ authors:
   orcid: "https://orcid.org/0000-0002-8777-5233"
 title: "mask-ukf"
 version: v1.1.0
-doi: 10.5281/zenodo.5457407
-date-released: 2021-09-04
+doi: 10.5281/zenodo.5448471
 url: "https://github.com/robotology/mask-ukf"
