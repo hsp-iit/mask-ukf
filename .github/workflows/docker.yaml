@@ -10,7 +10,7 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@main
       with:
-        name: robotology/mask-ukf
+        name: hsp-iit/mask-ukf
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         workdir: dockerfiles
