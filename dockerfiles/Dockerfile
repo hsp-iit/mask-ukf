@@ -1,7 +1,7 @@
 FROM ubuntu:focal
 LABEL org.opencontainers.image.title="MaskUKF Docker Image"
 LABEL org.opencontainers.image.description="Infrastructure for reproducing MaskUKF experiments on YCB-Video"
-LABEL org.opencontainers.image.source="https://raw.githubusercontent.com/robotology/mask-ukf/master/dockerfiles/Dockerfile"
+LABEL org.opencontainers.image.source="https://raw.githubusercontent.com/hsp-iit/mask-ukf/master/dockerfiles/Dockerfile"
 LABEL org.opencontainers.image.authors="Nicola A. Piga <nicola.piga@iit.it>"
 
 # Non-interactive installation mode
