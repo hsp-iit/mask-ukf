@@ -2,7 +2,7 @@
   MaskUKF
 </h1>
 
-<p align="center"><img src="https://github.com/robotology/mask-ukf/blob/master/assets/picture.png" alt=""/></p>
+<p align="center"><img src="https://github.com/hsp-iit/mask-ukf/blob/master/assets/picture.png" alt=""/></p>
 
 
 <h4 align="center">
@@ -19,7 +19,7 @@
 </div>
 
 [![DOI](https://zenodo.org/badge/208623376.svg)](https://zenodo.org/badge/latestdoi/208623376)
-![CI badge](https://github.com/robotology/mask-ukf/workflows/C++%20CI%20Workflow/badge.svg)
+![CI badge](https://github.com/hsp-iit/mask-ukf/workflows/C++%20CI%20Workflow/badge.svg)
 
 ## Reproducing the experiments
 
@@ -27,15 +27,15 @@ We support running the experiments via the provided Docker image.
 
 1. Pull the docker image:
     ```console
-    docker pull ghcr.io/robotology/mask-ukf:latest
+    docker pull ghcr.io/hsp-iit/mask-ukf:latest
     ```
 1. Launch the container:
     ```console
-    docker run -it --rm --user user --env="DISPLAY" --net=host ghcr.io/robotology/mask-ukf:latest
+    docker run -it --rm --user user --env="DISPLAY" --net=host ghcr.io/hsp-iit/mask-ukf:latest
     ```
 1. Clone and build the project:
     ```console
-    git clone https://github.com/robotology/mask-ukf.git
+    git clone https://github.com/hsp-iit/mask-ukf.git
     cd mask-ukf
     mkdir build && cd build
     cmake ../
