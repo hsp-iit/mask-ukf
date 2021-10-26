@@ -1,2 +1,2 @@
-image: ghcr.io/robotology/mask-ukf:latest
+image: ghcr.io/hsp-iit/mask-ukf:latest
 workspaceLocation: "."
