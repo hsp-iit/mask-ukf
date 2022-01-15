@@ -133,18 +133,16 @@ private:
                 if(!std::regex_search(pair.second->getValue(), match, exp))
                     throw(std::runtime_error("Provided values for " + pair.first + " are not valid " + type_description + " numbers."));
 
-                std::stringstream ss;
-                ss << pair.second->getValue();
+                std::stringstream ss(pair.second->getValue());
 
                 std::vector<T> array;
                 T number;
-                std::string tmp;
-                while(!ss.eof())
+                while(ss >> number)
                 {
-                    ss >> tmp;
+                    array.push_back(number);
 
-                    if (std::stringstream(tmp) >> number)
-                        array.push_back(number);
+                    if (ss.peek() == ',')
+                        ss.ignore();
                 }
 
                 std::string libconfig_path = std::regex_replace(pair.first, std::regex("::"), ".");
