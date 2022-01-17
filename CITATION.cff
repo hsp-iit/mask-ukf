@@ -20,7 +20,7 @@ authors:
   given-names: "Lorenzo"
   orcid: "https://orcid.org/0000-0002-8777-5233"
 title: "mask-ukf"
-version: v1.1.3
+version: v1.1.4
 doi: 10.5281/zenodo.5448471
 date-released: 2022-01-15
 url: "https://github.com/hsp-iit/mask-ukf"
