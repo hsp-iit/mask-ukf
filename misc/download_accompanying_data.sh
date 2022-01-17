@@ -7,5 +7,5 @@
 #
 #===============================================================================
 
-wget https://zenodo.org/record/5419201/files/data.zip?download=1 -O data.zip
+wget https://zenodo.org/record/5863361/files/data.zip?download=1 -O data.zip
 unzip data.zip

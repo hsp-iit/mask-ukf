@@ -41,7 +41,7 @@ We support running the experiments via the provided Docker image.
     cmake ../
     make
     ```
-1. Download and unzip the accompanying data [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5419201.svg)](https://doi.org/10.5281/zenodo.5419201) and the YCB-Video model set:
+1. Download and unzip the accompanying data [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5863361.svg)](https://doi.org/10.5281/zenodo.5863361) and the YCB-Video model set:
     ```console
     cd /home/user/mask-ukf
     bash misc/download_accompanying_data.sh
