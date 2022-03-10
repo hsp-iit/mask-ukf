@@ -26,6 +26,7 @@ jobs:
       if: contains(matrix.os, 'ubuntu')
       shell: bash -l {0}
       run: |
+        sudo apt-get update
         sudo apt install -y cmake libeigen3-dev libmlpack-dev libopencv-dev libpcl-dev libtclap-dev libconfig++-dev
 
     - name: Dependencies (from source) [Ubuntu]
