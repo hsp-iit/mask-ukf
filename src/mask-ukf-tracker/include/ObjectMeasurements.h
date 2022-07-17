@@ -10,6 +10,7 @@
 
 #include <BayesFilters/AdditiveMeasurementModel.h>
 #include <BayesFilters/Data.h>
+#include <BayesFilters/VectorDescription.h>
 
 #include <Camera.h>
 #include <PointCloudPrediction.h>
@@ -31,15 +32,15 @@ public:
 
     bool freeze(const bfl::Data& data = bfl::Data()) override;
 
-    std::pair<std::size_t, std::size_t> getOutputSize() const;
+    bfl::VectorDescription getInputDescription() const override;
+
+    bfl::VectorDescription getMeasurementDescription() const override;
 
     std::pair<bool, bfl::Data> predictedMeasure(const Eigen::Ref<const Eigen::MatrixXd>& current_states) const override;
 
     std::pair<bool, bfl::Data> innovation(const bfl::Data& predicted_measurements, const bfl::Data& measurements) const override;
 
     std::pair<bool, Eigen::MatrixXd> getNoiseCovarianceMatrix() const override;
-
-    std::pair<bool, Eigen::MatrixXd> getVisualNoiseCovarianceMatrix() const;
 
     bool setProperty(const std::string& property) override;
 

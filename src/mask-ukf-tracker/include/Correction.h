@@ -9,12 +9,12 @@
 #define CORRECTION_H
 
 #include <BayesFilters/AdditiveMeasurementModel.h>
+#include <BayesFilters/SUKFCorrection.h>
 
 #include <ObjectMeasurements.h>
-#include <SUKFCorrection.h>
 
 
-class Correction : public SUKFCorrection
+class Correction : public bfl::SUKFCorrection
 {
 public:
     Correction
@@ -23,7 +23,6 @@ public:
         /**
          * Unscented transform parameters
          */
-        const std::size_t state_size,
         const double      alpha,
         const double      beta,
         const double      kappa,

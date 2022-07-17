@@ -10,6 +10,7 @@
 #include <Eigen/Dense>
 
 using namespace Eigen;
+using namespace bfl;
 
 
 DiscretizedKinematicModel::DiscretizedKinematicModel
@@ -76,11 +77,22 @@ void DiscretizedKinematicModel::evaluateNoiseCovarianceMatrix(const double T)
     Q_.block<6, 6>(6, 6) = Q_ang;
 }
 
-std::pair<std::size_t, std::size_t> DiscretizedKinematicModel::getOutputSize() const
+
+VectorDescription DiscretizedKinematicModel::getInputDescription()
 {
     // 9 linear components (x, y, z, x_dot, y_dot, z_dot, yaw_dot, pitch_dot, roll_dot)
     // 3 angular components (yaw, pitch, roll)
-    return std::make_pair(9, 3);
+    // 12 noise components
+    return VectorDescription(9, 3, 12, VectorDescription::CircularType::Euler);
+}
+
+
+VectorDescription DiscretizedKinematicModel::getStateDescription()
+{
+    // 9 linear components (x, y, z, x_dot, y_dot, z_dot, yaw_dot, pitch_dot, roll_dot)
+    // 3 angular components (yaw, pitch, roll)
+    // 0 noise components
+    return VectorDescription(9, 3, 0, VectorDescription::CircularType::Euler);
 }
 
 
