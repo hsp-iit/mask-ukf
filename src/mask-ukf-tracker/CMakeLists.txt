@@ -53,7 +53,6 @@ set(${EXE_TARGET_NAME}_HDR
     include/PointCloudPrediction.h
     include/PointCloudSegmentation.h
     include/StaticPrediction.h
-    include/SUKFCorrection.h
     include/UKFFilter.h
     include/YCBVideoCamera.h
     include/kdTree.h
@@ -72,7 +71,6 @@ set(${EXE_TARGET_NAME}_SRC
     src/PointCloudModel.cpp
     src/PointCloudSegmentation.cpp
     src/StaticPrediction.cpp
-    src/SUKFCorrection.cpp
     src/UKFFilter.cpp
     src/YCBVideoCamera.cpp
     src/main.cpp

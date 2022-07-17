@@ -19,7 +19,6 @@ Correction::Correction
     /**
      * Unscented transform parameters
      */
-    const std::size_t state_size,
     const double      alpha,
     const double      beta,
     const double      kappa,
@@ -29,7 +28,7 @@ Correction::Correction
      */
     const std::size_t meas_sub_size
 ) noexcept :
-    SUKFCorrection(std::move(meas_model), state_size, alpha, beta, kappa, meas_sub_size, true)
+    SUKFCorrection(std::move(meas_model), alpha, beta, kappa, meas_sub_size, true)
 { }
 
 

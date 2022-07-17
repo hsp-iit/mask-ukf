@@ -219,11 +219,6 @@ int main(int argc, char** argv)
         new DiscretizedKinematicModel(kin_q_x(0), kin_q_x(1), kin_q_x(2), kin_q_eul(0), kin_q_eul(1), kin_q_eul(2), 1.0 / kin_rate, kin_est_period)
     );
 
-    std::size_t dim_linear;
-    std::size_t dim_circular;
-    std::tie(dim_linear, dim_circular) = kinematic_model->getOutputSize();
-    std::size_t state_size = dim_linear + dim_circular;
-
     /**
      * Initial condition.
      */
@@ -269,7 +264,7 @@ int main(int argc, char** argv)
         std::size_t measurement_sub_size = 3;
         correction = std::unique_ptr<Correction>
         (
-            new Correction(std::move(measurement_model), state_size, ut_alpha, ut_beta, ut_kappa, measurement_sub_size)
+            new Correction(std::move(measurement_model), ut_alpha, ut_beta, ut_kappa, measurement_sub_size)
         );
     }
     else
