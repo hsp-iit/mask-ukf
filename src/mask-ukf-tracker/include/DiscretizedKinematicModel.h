@@ -9,6 +9,7 @@
 #define DISCRETIZEDKINEMATICMODEL_H
 
 #include <BayesFilters/LinearStateModel.h>
+#include <BayesFilters/VectorDescription.h>
 
 #include <Eigen/Dense>
 
@@ -38,7 +39,9 @@ public:
 
     Eigen::MatrixXd getNoiseCovarianceMatrix();
 
-    std::pair<std::size_t, std::size_t> getOutputSize() const override;
+    bfl::VectorDescription getInputDescription() override;
+
+    bfl::VectorDescription getStateDescription() override;
 
 protected:
     void evaluateStateTransitionMatrix(const double T);

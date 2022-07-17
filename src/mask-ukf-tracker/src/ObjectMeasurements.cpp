@@ -213,9 +213,19 @@ bool ObjectMeasurements::freeze(const Data& data)
 }
 
 
-std::pair<std::size_t, std::size_t> ObjectMeasurements::getOutputSize() const
+VectorDescription ObjectMeasurements::getInputDescription() const
 {
-    return std::make_pair(measurement_.size(), 0);
+    // 9 linear components (x, y, z, x_dot, y_dot, z_dot, yaw_dot, pitch_dot, roll_dot)
+    // 3 angular components (yaw, pitch, roll)
+    // 12 noise components
+    return VectorDescription(9, 3, 12, VectorDescription::CircularType::Euler);
+}
+
+
+VectorDescription ObjectMeasurements::getMeasurementDescription() const
+{
+    // measurement_.size() linear components
+    return VectorDescription(measurement_.size());
 }
 
 

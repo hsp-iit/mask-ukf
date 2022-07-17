@@ -11,6 +11,7 @@
 #include <BayesFilters/GaussianMixture.h>
 #include <BayesFilters/GaussianPrediction.h>
 #include <BayesFilters/StateModel.h>
+#include <BayesFilters/VectorDescription.h>
 
 #include <memory>
 
@@ -35,11 +36,23 @@ public:
         return false;
     };
 
-    std::pair<std::size_t, std::size_t> getOutputSize() const override
+    bfl::VectorDescription getInputDescription() override
     {
-        return std::make_pair(9, 3);
+        // 9 linear components (x, y, z, x_dot, y_dot, z_dot, yaw_dot, pitch_dot, roll_dot)
+        // 3 angular components (yaw, pitch, roll)
+        // 12 noise components
+        return bfl::VectorDescription(9, 3, 12, bfl::VectorDescription::CircularType::Euler);
+    };
+
+    bfl::VectorDescription getStateDescription() override
+    {
+        // 9 linear components (x, y, z, x_dot, y_dot, z_dot, yaw_dot, pitch_dot, roll_dot)
+        // 3 angular components (yaw, pitch, roll)
+        // 0 noise components
+        return bfl::VectorDescription(9, 3, 0, bfl::VectorDescription::CircularType::Euler);
     };
 };
+
 
 class StaticPrediction : public bfl::GaussianPrediction
 {
