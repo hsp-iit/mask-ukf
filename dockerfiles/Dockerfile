@@ -29,8 +29,8 @@ RUN apt update && \
 
 # Install dependencies (from source)
 
-# Install bayes-filters-lib (devel)
-RUN git clone -b devel https://github.com/robotology/bayes-filters-lib && \
+# Install bayes-filters-lib
+RUN git clone https://github.com/robotology/bayes-filters-lib && \
     cd bayes-filters-lib && mkdir build && cd build && \
     cmake .. && \
     make install
