@@ -37,7 +37,6 @@ jobs:
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/bayes-filters-lib
         cd bayes-filters-lib
-        git checkout devel
         mkdir build
         cd build
         cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
@@ -47,6 +46,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/jlblancoc/nanoflann
         cd nanoflann
+        git checkout 05d9c35d175fbcedd9f1f854ab49d04ae0bc5dbc
         mkdir build
         cd build
         cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} -DNANOFLANN_BUILD_EXAMPLES:BOOL=OFF -DNANOFLANN_BUILD_TESTS:BOOL=OFF ..
