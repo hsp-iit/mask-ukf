@@ -25,6 +25,8 @@
 
 We support running the experiments via the provided Docker image.
 
+> If you want to install the repository manually, please refer to the recipe contained in the [**`Dockerfile`**](./dockerfiles/Dockerfile).
+
 1. Pull the docker image:
     ```console
     docker pull ghcr.io/hsp-iit/mask-ukf:latest
@@ -67,8 +69,6 @@ We support running the experiments via the provided Docker image.
     > `<algorithm>` can be `mask-ukf` (MaskUKF), `icp` (ICP) or `dense_fusion` (DenseFusion), ``<mask_set>`` is as above, `<object_name>` is e.g. `002_master_chef_can` and `<video_id>` is the YCB-Video video id, e.g. `0048`.
 
 > In order to run the visualizer it could be required to temporarily execute `xhost +` in a console outside of Docker in order to allow the container accessing the X server facilities. The command can be run even **after** the container has been already launched.
-
-> If you want to install the repository manually, please refer to the recipe contained in the [**`Dockerfile`**](./dockerfiles/Dockerfile). Please be aware that the results might differ if unsupported versions of the dependencies are used.
 
 ## Citing MaskUKF
 
